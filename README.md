@@ -52,4 +52,4 @@ sudo cmake -DBUILD_SHARED_LIBS=ON
 
 sudo make
 
-sudo cp *.so /usr/lib
+sudocp *.so /usr/lib

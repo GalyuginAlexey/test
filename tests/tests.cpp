@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
-#include "../config/config.h"
-#include "../database/database.h"
-#include "../database/person.h"
+#include "config/config.h"
+#include "database/database.h"
+#include "database/person.h"
 #include <Poco/Data/SessionFactory.h>
 using Poco::Data::Session;
 using Poco::Data::Statement;
@@ -34,7 +34,7 @@ void remove_person(std::string login, int shard_num) {
 }
 
 class TestApp : public ::testing::Test {
-public:
+protected:
     TestApp() {
         Config::get().host() = "127.0.0.1";
         Config::get().database() = "sql_test";
@@ -47,12 +47,12 @@ public:
         Config::get().queue_group_id() = "0";
     }
     
-    ~TestApp() { 
+    ~TestApp() {
         remove_person("123", 0);
         remove_person("456", 1);
         remove_person("789", 1);
         remove_person("509", 2);
-        remove_person("929", 0);
+        remove_person("919", 0);
 
         reset_ai(0);
         reset_ai(1);
@@ -67,7 +67,7 @@ protected:
 
 };
 
-TEST_F (TestApp, test1) {
+TEST_F(TestApp, test1) {
     database::Person person;
     person.login() = "123";
     person.first_name() = "Jack";
@@ -80,12 +80,12 @@ TEST_F (TestApp, test1) {
     ASSERT_EQ(login_result.get_age(), person.get_age());
 }
 
-TEST_F (TestApp, test2) {
+TEST_F(TestApp, test2) {
     database::Person person;
     person.login() = "456";
     person.first_name() = "Tom";
     person.last_name() = "Sawyer";
-    person.age() = 34;
+    person.age()=16
     person.save_to_mysql();
     database::Person login_result = database::Person::read_by_login(person.get_login());
     ASSERT_EQ(login_result.get_first_name(), person.get_first_name());
@@ -93,7 +93,7 @@ TEST_F (TestApp, test2) {
     ASSERT_EQ(login_result.get_age(), person.get_age());
 }
 
-TEST_F (TestApp, test3) {
+TEST_F(TestApp, test3) {
     database::Person person;
     person.login() = "789";
     person.first_name() = "Greg";
@@ -106,7 +106,7 @@ TEST_F (TestApp, test3) {
     ASSERT_EQ(login_result.get_age(), person.get_age());
 }
 
-TEST_F (TestApp, test4) {
+TEST_F(TestApp, test4) {
     database::Person person;
     person.login() = "509";
     person.first_name() = "Andrey";
@@ -117,9 +117,9 @@ TEST_F (TestApp, test4) {
     ASSERT_EQ(login_result.get_first_name(), person.get_first_name());
     ASSERT_EQ(login_result.get_last_name(), person.get_last_name());
     ASSERT_EQ(login_result.get_age(), person.get_age());
-}
+}  
 
-TEST_F (TestApp, test5) {
+TEST_F(TestApp, test5) {
     database::Person person;
     person.login() = "919";
     person.first_name() = "Pavel";
@@ -130,7 +130,7 @@ TEST_F (TestApp, test5) {
     ASSERT_EQ(login_result.get_first_name(), person.get_first_name());
     ASSERT_EQ(login_result.get_last_name(), person.get_last_name());
     ASSERT_EQ(login_result.get_age(), person.get_age());
-}
+}  
 
 int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);

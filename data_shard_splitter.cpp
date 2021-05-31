@@ -10,7 +10,7 @@ int main() {
     size_t shard_num;
 
     std::string line;
-    std::ifstream infile("sql_commands/data_generation.sql");
+    std::ifstream infile("sql_commands/database_generation.sql");
     std::ofstream outfile("sql_commands/shard_fill.sql");
 
     std::string shard_data0 = "use sql_test;\nINSERT INTO Person (login, first_name,last_name,age) VALUES\n";
